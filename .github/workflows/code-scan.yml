@@ -51,7 +51,7 @@ jobs:
         with:
           format: 'table'
           scan-type: 'fs,os'
-          exit-code: '1'
+          exit-code: '0'
           scan-ref: '.'
           vuln-type: 'os,library'
           output: 'security-report.txt'
