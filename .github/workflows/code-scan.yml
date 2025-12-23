@@ -32,19 +32,13 @@ jobs:
           languages: ${{ matrix.language }}
       
       - name: Automatic CodeQL Database Creation
-        uses: github/codeql-action/autobuild@v4
+        uses: github/codeql-action/autobuild@v3
           
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v4
-
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v4
-        with:
-          sarif_file: codeql-results.sarif
-          path: ./codeql-results.sarif
+        uses: github/codeql-action/analyze@v3
   
   security-scanning:
-    name: Security Scanning
+    name: Trivy FileSystem Security Scanning
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -64,8 +58,8 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: security-report.txt
-          path: ./security-report.txt
-  
+          path: './security-report.txt'
+
   build-test:
     name: Build and Test
     needs: [analyse, security-scanning]
