@@ -63,7 +63,7 @@ jobs:
   
   build-test:
     name: Build and Test
-    needs: analyse, security-scanning
+    needs: [analyse, security-scanning]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
