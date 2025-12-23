@@ -60,6 +60,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: security-report.txt
+          path: './security-report.txt'
   
   build-test:
     name: Build and Test
