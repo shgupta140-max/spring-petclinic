@@ -50,7 +50,7 @@ jobs:
         uses: aquasecurity/trivy-action@v0.33.1
         with:
           format: 'table'
-          scan-type: ['fs', 'os']
+          scan-type: 'fs,os'
           exit-code: '1'
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
