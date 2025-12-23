@@ -41,6 +41,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: codeql-results.sarif
+          path: ./codeql-results.sarif
   
   security-scanning:
     name: Security Scanning
@@ -63,7 +64,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: security-report.txt
-          path: './security-report.txt'
+          path: ./security-report.txt
   
   build-test:
     name: Build and Test
