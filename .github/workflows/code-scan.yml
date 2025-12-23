@@ -47,13 +47,13 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Run Trivy Security Scan
-        uses: aquasecurity/trivy-action@v0.33.1
+        uses: aquasecurity/trivy-action@0.33.1
         with:
           format: 'table'
           scan-type: 'fs,os'
           exit-code: '1'
+          scan-ref: '.'
           vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
           output: 'security-report.txt'
         
       - name: Upload Security Scan report
