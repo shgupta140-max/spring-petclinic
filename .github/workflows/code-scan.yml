@@ -27,15 +27,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Initialize CodeQL
-        uses: github/codeql-actions/init@v3
+        uses: github/codeql-actions/init@v4
         with:
           languages: ${{ matrix.language }}
           
       - name: Perform CodeQL Analysis
-        uses: gitub/codeql-actions/analyze@v3
+        uses: gitub/codeql-actions/analyze@v4
 
       - name: Upload SARIF file
-        uses: github/codeql-actions/upload-sarif@v3
+        uses: github/codeql-actions/upload-sarif@v4
         with:
           sarif-file: codeql-results.sarif
   
@@ -57,7 +57,7 @@ jobs:
           output: 'security-report.txt'
         
       - name: Upload Security Scan report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: security-report.txt
   
