@@ -10,73 +10,73 @@ on:
   workflow_dispatch:
 
 jobs:
-  - analyse:
-      name: Analyze(${{ matrix.language }})
-      runs-on: ubuntu-latest
-      permissions:
-        contents: read
-        security-events: write
+  analyse:
+    name: Analyze(${{ matrix.language }})
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
 
-      strategy:
-        fail-fast: false
-        matrix: ['java']
+    strategy:
+      fail-fast: false
+      matrix: ['java']
 
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-        - name: Initialize CodeQL
-          uses: github/codeql-actions/init@v3
-          with:
-            languages: ${{ matrix.language }}
+      - name: Initialize CodeQL
+        uses: github/codeql-actions/init@v3
+        with:
+          languages: ${{ matrix.language }}
           
-        - name: Perform CodeQL Analysis
-          uses: gitub/codeql-actions/analyze@v3
+      - name: Perform CodeQL Analysis
+        uses: gitub/codeql-actions/analyze@v3
 
-        - name: Upload SARIF file
-          uses: github/codeql-actions/upload-sarif@v3
-          with:
-            sarif-file: codeql-results.sarif
+      - name: Upload SARIF file
+        uses: github/codeql-actions/upload-sarif@v3
+        with:
+          sarif-file: codeql-results.sarif
   
-  - security-scanning:
-      name: Security Scanning
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
+  security-scanning:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
         
-        - name: Run Trivy Security Scan
-          uses: aquasecurity/trivy-action@v0.33.1
-          with:
-            format: 'table'
-            scan-type: ['fs', 'os']
-            exit-code: '1'
-            vuln-type: 'os,library'
-            severity: 'CRITICAL,HIGH'
-            output: 'security-report.txt'
+      - name: Run Trivy Security Scan
+        uses: aquasecurity/trivy-action@v0.33.1
+        with:
+          format: 'table'
+          scan-type: ['fs', 'os']
+          exit-code: '1'
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+          output: 'security-report.txt'
         
-        - name: Upload Security Scan report
-          uses: actions/upload-artifact@v3
-          with:
-            name: security-report.txt
+      - name: Upload Security Scan report
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-report.txt
   
-  - build-test:
-      name: Build and Test
-      needs: analyse, security-scanning
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
+  build-test:
+    name: Build and Test
+    needs: analyse, security-scanning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-        - name: Set up JDK 11
-          uses: actions/setup-java@v3
-          with:
-            distribution: 'temurin'
-            java-version: '11'
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
 
-        - name: Build with Maven
-          run: mvn -B package --file pom.xml
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
 
-        - name: Run Tests
-          run: mvn clean test
+      - name: Run Tests
+        run: mvn clean test
 
